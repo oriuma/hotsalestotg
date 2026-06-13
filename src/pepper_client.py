@@ -3,7 +3,7 @@ from json import JSONDecodeError
 import requests
 from src.config import PEPPER_GRAPHQL_URL, MIN_TEMPERATURE
 
-# Persistent session — reuses cookies across requests (looks more like a real browser)
+# Persistent session — reuses cookies across requests
 _session = requests.Session()
 _session.headers.update({
     "User-Agent": (
@@ -13,8 +13,7 @@ _session.headers.update({
     ),
     "accept": "application/json, text/plain, */*",
     "accept-language": "pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7",
-    # 'br' (brotli) removed — requests doesn't decompress brotli natively,
-    # server was returning brotli-compressed body causing JSONDecodeError
+    # 'br' removed — requests doesn't decompress brotli natively
     "accept-encoding": "gzip, deflate",
     "content-type": "application/json",
     "origin": "https://www.pepper.pl",
@@ -54,7 +53,12 @@ RETRY_DELAYS = [3, 10, 20, 40]
 
 
 def _warm_up_session():
-    """GET the listing page first to pick up cookies, like a real browser would."""
+    """
+    1. GET /najgoretsze to pick up session cookies (like a real browser).
+    2. POST /bpn/getRequestPermissionParams to obtain XSRF token.
+    Browser always does both before sending GraphQL requests.
+    """
+    # Step 1: visit listing page to get cookies
     try:
         r = _session.get(
             "https://www.pepper.pl/najgoretsze",
@@ -63,7 +67,34 @@ def _warm_up_session():
         )
         print(f"[pepper_client] Warm-up GET /najgoretsze → {r.status_code}")
     except Exception as e:
-        print(f"[pepper_client] Warm-up failed (non-fatal): {e}")
+        print(f"[pepper_client] Warm-up GET failed (non-fatal): {e}")
+
+    # Step 2: fetch XSRF token from bpn endpoint (browser always calls this)
+    try:
+        r2 = _session.post(
+            "https://www.pepper.pl/bpn/getRequestPermissionParams",
+            timeout=15,
+            json={},
+        )
+        print(f"[pepper_client] bpn/getRequestPermissionParams → {r2.status_code}")
+        if r2.status_code == 200:
+            try:
+                payload = r2.json()
+                token = payload.get("data", {}).get("token")
+                if token:
+                    _session.headers.update({
+                        "x-xsrf-token": token,
+                        "X-XSRF-TOKEN": token,
+                    })
+                    print(f"[pepper_client] XSRF token obtained: {token[:20]}...")
+                else:
+                    print(f"[pepper_client] bpn token not found in response: {str(payload)[:300]}")
+            except JSONDecodeError as e:
+                print(f"[pepper_client] bpn response not JSON: {e} | body: {r2.text[:200]!r}")
+        else:
+            print(f"[pepper_client] bpn non-200: {r2.text[:200]!r}")
+    except Exception as e:
+        print(f"[pepper_client] bpn token request failed (non-fatal): {e}")
 
 
 def fetch_page(page: int) -> list[dict]:
@@ -104,6 +135,11 @@ def fetch_page(page: int) -> list[dict]:
                     .get("threads", [])
                 ) or []
                 print(f"[pepper_client] page={page} → {len(threads)} threads")
+
+                if len(threads) == 0:
+                    # Log full response so we can debug why it's empty
+                    print(f"[pepper_client] Full response (truncated 4000): {str(data)[:4000]}")
+
                 return threads
 
             elif resp.status_code == 418:

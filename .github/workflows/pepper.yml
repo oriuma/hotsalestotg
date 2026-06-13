@@ -47,7 +47,8 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STATE_FILE: "data/seen_ids.json"
-          MIN_TEMPERATURE: "50"
+          # Set to 0 for testing — change back to 50-100 once confirmed working
+          MIN_TEMPERATURE: "0"
           MAX_PAGES: "3"
         run: |
           python main.py
