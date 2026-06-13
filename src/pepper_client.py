@@ -13,7 +13,9 @@ _session.headers.update({
     ),
     "accept": "application/json, text/plain, */*",
     "accept-language": "pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7",
-    "accept-encoding": "gzip, deflate, br",
+    # 'br' (brotli) removed — requests doesn't decompress brotli natively,
+    # server was returning brotli-compressed body causing JSONDecodeError
+    "accept-encoding": "gzip, deflate",
     "content-type": "application/json",
     "origin": "https://www.pepper.pl",
     "referer": "https://www.pepper.pl/najgoretsze",
@@ -87,7 +89,8 @@ def fetch_page(page: int) -> list[dict]:
                     print(
                         f"[pepper_client] Invalid JSON on page={page}, "
                         f"attempt {attempt + 1}/{MAX_RETRIES}. "
-                        f"Body preview: {resp.text[:200]!r}"
+                        f"Content-Encoding: {resp.headers.get('Content-Encoding', 'none')}. "
+                        f"Body preview: {resp.content[:120]!r}"
                     )
                     if attempt < MAX_RETRIES - 1:
                         time.sleep(RETRY_DELAYS[attempt])

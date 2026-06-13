@@ -47,7 +47,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STATE_FILE: "data/seen_ids.json"
-          MIN_TEMPERATURE: "100"
+          MIN_TEMPERATURE: "50"
           MAX_PAGES: "3"
         run: |
           python main.py
@@ -57,20 +57,16 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # force-add even if .gitignore would normally exclude it
           git add -f data/seen_ids.json || true
           git diff --staged --quiet || git commit -m "chore: update seen_ids [skip ci]"
 
-          # Resolve branch name (handles refs/heads/main or detached HEAD)
           BRANCH="${GITHUB_REF#refs/heads/}"
           if [ -z "$BRANCH" ] || [ "$BRANCH" = "$GITHUB_REF" ]; then
             BRANCH=$(git rev-parse --abbrev-ref HEAD)
           fi
 
-          # Fetch latest remote to avoid non-fast-forward rejects
           git fetch origin "$BRANCH"
 
-          # Try rebase; fallback to merge if rebase fails
           if git rebase --autostash "origin/$BRANCH"; then
             git push origin "$BRANCH"
           else

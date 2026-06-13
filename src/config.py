@@ -5,7 +5,8 @@ TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 TELEGRAM_CHAT_ID   = os.environ["TELEGRAM_CHAT_ID"]
 
 # --- Scraper settings ---
-MIN_TEMPERATURE      = int(os.getenv("MIN_TEMPERATURE", "100"))   # degrees on pepper
+# Lowered default to 50 so more deals pass through (100 was too strict for testing)
+MIN_TEMPERATURE      = int(os.getenv("MIN_TEMPERATURE", "50"))
 MAX_PAGES            = int(os.getenv("MAX_PAGES", "3"))
 TELEGRAM_SLEEP_SECONDS = float(os.getenv("TELEGRAM_SLEEP_SECONDS", "0.5"))
 
