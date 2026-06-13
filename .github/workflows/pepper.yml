@@ -35,6 +35,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Ensure state file exists
+        run: |
+          mkdir -p data
+          test -f data/seen_ids.json || echo '[]' > data/seen_ids.json
+
       - name: Run scraper
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -50,6 +55,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/seen_ids.json
+          # force-add even if .gitignore would normally exclude it
+          git add -f data/seen_ids.json || true
           git diff --staged --quiet || git commit -m "chore: update seen_ids [skip ci]"
           git push

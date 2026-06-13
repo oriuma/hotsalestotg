@@ -23,5 +23,6 @@ env/
 .env
 *.env
 
-# State (committed via workflow, ignored locally)
-data/seen_ids.json
+# State file is TRACKED by git (updated by CI)
+# Do NOT ignore data/seen_ids.json
+!/data/seen_ids.json
