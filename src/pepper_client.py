@@ -1,8 +1,9 @@
 import time
+from json import JSONDecodeError
 import requests
 from src.config import PEPPER_GRAPHQL_URL, MIN_TEMPERATURE
 
-# Realistic browser session — reuse across requests to look less like a bot
+# Persistent session — reuses cookies across requests (looks more like a real browser)
 _session = requests.Session()
 _session.headers.update({
     "User-Agent": (
@@ -51,10 +52,7 @@ RETRY_DELAYS = [3, 10, 20, 40]
 
 
 def _warm_up_session():
-    """
-    Visit the main page first to get cookies (like a real browser).
-    This prevents the server from immediately seeing a cookieless POST.
-    """
+    """GET the listing page first to pick up cookies, like a real browser would."""
     try:
         r = _session.get(
             "https://www.pepper.pl/najgoretsze",
@@ -67,9 +65,8 @@ def _warm_up_session():
 
 
 def fetch_page(page: int) -> list[dict]:
-    """Fetch one page of hot deals from pepper.pl with retry on 418/5xx."""
+    """Fetch one page of hot deals from pepper.pl with retry on 418/5xx/invalid JSON."""
     if page == 1:
-        # Warm up cookies before first GraphQL call
         _warm_up_session()
         time.sleep(1.5)
 
@@ -81,14 +78,22 @@ def fetch_page(page: int) -> list[dict]:
 
     for attempt in range(MAX_RETRIES):
         try:
-            resp = _session.post(
-                PEPPER_GRAPHQL_URL,
-                json=payload,
-                timeout=20,
-            )
+            resp = _session.post(PEPPER_GRAPHQL_URL, json=payload, timeout=20)
 
             if resp.status_code == 200:
-                data = resp.json()
+                try:
+                    data = resp.json()
+                except JSONDecodeError:
+                    print(
+                        f"[pepper_client] Invalid JSON on page={page}, "
+                        f"attempt {attempt + 1}/{MAX_RETRIES}. "
+                        f"Body preview: {resp.text[:200]!r}"
+                    )
+                    if attempt < MAX_RETRIES - 1:
+                        time.sleep(RETRY_DELAYS[attempt])
+                        continue
+                    return []
+
                 threads = (
                     data
                     .get("data", {})
@@ -106,7 +111,6 @@ def fetch_page(page: int) -> list[dict]:
                 )
                 if attempt < MAX_RETRIES - 1:
                     time.sleep(delay)
-                    # Re-warm cookies
                     _warm_up_session()
                     time.sleep(2)
                 else:

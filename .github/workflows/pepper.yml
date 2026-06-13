@@ -21,9 +21,10 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4
         with:
           persist-credentials: true
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5.6.0
@@ -55,7 +56,25 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
           # force-add even if .gitignore would normally exclude it
           git add -f data/seen_ids.json || true
           git diff --staged --quiet || git commit -m "chore: update seen_ids [skip ci]"
-          git push
+
+          # Resolve branch name (handles refs/heads/main or detached HEAD)
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          if [ -z "$BRANCH" ] || [ "$BRANCH" = "$GITHUB_REF" ]; then
+            BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          fi
+
+          # Fetch latest remote to avoid non-fast-forward rejects
+          git fetch origin "$BRANCH"
+
+          # Try rebase; fallback to merge if rebase fails
+          if git rebase --autostash "origin/$BRANCH"; then
+            git push origin "$BRANCH"
+          else
+            git rebase --abort || true
+            git pull --no-edit origin "$BRANCH" || true
+            git push origin "$BRANCH"
+          fi
