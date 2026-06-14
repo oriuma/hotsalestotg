@@ -27,15 +27,15 @@ _session.headers.update({
     "x-requested-with": "XMLHttpRequest",
 })
 
-# Minimal query — only fields confirmed to exist in pepper.pl schema from HAR.
-# Removed: options.selected, lastComment.hasVisibleComments (cause schema errors).
-# No operationName in payload — avoids "Unknown operation" errors.
+# HAR confirms: /najgoretsze page sends feed="popular" (not "hot").
+# Fields confirmed present in schema from HAR capture.
 GQL_QUERY = """
-query ($page: Int, $feed: String) {
+query DiscussionWidget($page: Int, $feed: String, $groupId: Int) {
   discussionWidget(
     page: $page,
-    filter: { feed: { eq: $feed } }
+    filter: { feed: { eq: $feed }, groupId: $groupId }
   ) {
+    options { text value selected }
     threads {
       threadId
       title
@@ -49,6 +49,8 @@ query ($page: Int, $feed: String) {
       user {
         userId
         username
+        isUserProfileHidden
+        isDeletedOrPendingDeletion
         avatar { name path }
       }
       isBacklinksFeatureApplied
@@ -86,7 +88,7 @@ def _warm_up_session():
                 token = payload.get("data", {}).get("token")
                 if token:
                     _session.headers.update({"x-xsrf-token": token, "X-XSRF-TOKEN": token})
-                    print(f"[pepper_client] XSRF token: {token[:20]}...")
+                    print(f"[pepper_client] XSRF token acquired")
                 else:
                     print(f"[pepper_client] bpn: token not found in: {str(payload)[:300]}")
             except JSONDecodeError as e:
@@ -101,7 +103,7 @@ def _extract_threads(data) -> tuple[list, list]:
     """
     Extract threads from a GraphQL response that may be:
     - a dict  (single response)
-    - a list  (batched responses — browser sends multiple queries at once)
+    - a list  (batched responses)
     Returns (threads, errors).
     """
     if isinstance(data, list):
@@ -129,9 +131,10 @@ def fetch_page(page: int) -> list[dict]:
         _warm_up_session()
         time.sleep(1.5)
 
-    # No operationName — avoids "Unknown operation named X" schema errors
+    # feed="popular" confirmed from HAR: /najgoretsze sends variables={discussionWidgetPage:1, feed:"popular"}
     payload = {
-        "variables": {"page": page, "feed": "hot"},
+        "operationName": "DiscussionWidget",
+        "variables": {"page": page, "feed": "popular", "groupId": None},
         "query": GQL_QUERY,
     }
 
@@ -159,13 +162,9 @@ def fetch_page(page: int) -> list[dict]:
                 if errors:
                     print(f"[pepper_client] GraphQL errors page={page}: {str(errors)[:600]}")
                     if not threads:
-                        # Schema error — no point retrying same payload
                         return []
 
                 print(f"[pepper_client] page={page} → {len(threads)} threads")
-                if not threads:
-                    print(f"[pepper_client] Full response (4000): {str(data)[:4000]}")
-
                 return threads
 
             elif resp.status_code == 418:
