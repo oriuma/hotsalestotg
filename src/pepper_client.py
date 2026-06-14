@@ -27,27 +27,32 @@ _session.headers.update({
     "x-requested-with": "XMLHttpRequest",
 })
 
-# Schema-validated query:
-# - feed="popular" confirmed from HAR for /najgoretsze page
-# - options: only {text value} — "selected" does not exist on WidgetOption
-# - no groupId variable — it expects IDFilter type, not Int
+# Fields confirmed present in pepper.pl GraphQL schema
 GQL_QUERY = """
 query DiscussionWidget($page: Int, $feed: String) {
   discussionWidget(
     page: $page,
     filter: { feed: { eq: $feed } }
   ) {
-    options { text value }
     threads {
       threadId
       title
       titleSlug
       type
       url
-      isIndexed
+      temperature
+      price
+      nextBestPrice
+      publishedDate
+      expiryDate
       commentCount
       shortLastPublishedTimeAgo
-      lastUpdatedDate
+      merchant {
+        merchantName
+      }
+      mainCategory {
+        name
+      }
       user {
         userId
         username
@@ -66,7 +71,6 @@ RETRY_DELAYS = [3, 10, 20, 40]
 
 
 def _warm_up_session():
-    """Replicate browser flow: GET /najgoretsze → POST /bpn/getRequestPermissionParams."""
     try:
         r = _session.get(
             "https://www.pepper.pl/najgoretsze",
@@ -155,7 +159,9 @@ def fetch_page(page: int) -> list[dict]:
                 threads, errors = _extract_threads(data)
 
                 if errors:
-                    print(f"[pepper_client] GraphQL errors page={page}: {str(errors)[:600]}")
+                    # Log just field names for easier debugging
+                    err_msgs = [e.get("message", "") for e in errors]
+                    print(f"[pepper_client] GraphQL errors page={page}: {err_msgs}")
                     if not threads:
                         return []
 
@@ -204,19 +210,32 @@ def normalize_deal(thread: dict) -> dict | None:
     if not title or not url:
         return None
 
+    # Merchant and category from nested objects
+    merchant_obj = thread.get("merchant") or {}
+    merchant = merchant_obj.get("merchantName", "") if isinstance(merchant_obj, dict) else ""
+
+    category_obj = thread.get("mainCategory") or {}
+    category = category_obj.get("name", "") if isinstance(category_obj, dict) else ""
+
     avatar_path = ((thread.get("user") or {}).get("avatar") or {}).get("path", "")
 
+    # Temperature: real value from API, no fallback magic number
+    temperature = thread.get("temperature")
+    if temperature is None:
+        temperature = 0
+
     return {
-        "id":           thread_id,
-        "title":        title,
-        "url":          url,
-        "temperature":  thread.get("temperature", 999),
-        "price":        thread.get("price"),
-        "next_price":   thread.get("nextBestPrice"),
-        "merchant":     "",
-        "category":     "",
-        "published":    thread.get("shortLastPublishedTimeAgo", ""),
-        "image_url":    f"https://www.pepper.pl{avatar_path}" if avatar_path else "",
+        "id":            thread_id,
+        "title":         title,
+        "url":           url,
+        "temperature":   temperature,
+        "price":         thread.get("price"),
+        "next_price":    thread.get("nextBestPrice"),
+        "merchant":      merchant,
+        "category":      category,
+        "published":     thread.get("publishedDate", ""),
+        "expiry":        thread.get("expiryDate", ""),
+        "image_url":     f"https://www.pepper.pl{avatar_path}" if avatar_path else "",
         "comment_count": thread.get("commentCount", 0),
     }
 
