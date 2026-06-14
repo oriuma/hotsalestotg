@@ -1,0 +1,36 @@
+﻿2026-06-14T13:32:32.8560000Z ##[group]Run python -m pip install --upgrade pip
+2026-06-14T13:32:32.8561412Z [36;1mpython -m pip install --upgrade pip[0m
+2026-06-14T13:32:32.8562513Z [36;1mpip install -r requirements.txt[0m
+2026-06-14T13:32:32.8798262Z shell: /usr/bin/bash -e {0}
+2026-06-14T13:32:32.8799321Z env:
+2026-06-14T13:32:32.8800129Z   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+2026-06-14T13:32:32.8801306Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T13:32:32.8802709Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-06-14T13:32:32.8804302Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T13:32:32.8805584Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T13:32:32.8806857Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T13:32:32.8808396Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-06-14T13:32:32.8809525Z ##[endgroup]
+2026-06-14T13:32:35.9228186Z Requirement already satisfied: pip in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (26.1.2)
+2026-06-14T13:32:37.1074580Z Collecting requests (from -r requirements.txt (line 1))
+2026-06-14T13:32:37.1623209Z   Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+2026-06-14T13:32:37.1982724Z Collecting brotli (from -r requirements.txt (line 2))
+2026-06-14T13:32:37.2019926Z   Downloading brotli-1.2.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (6.1 kB)
+2026-06-14T13:32:37.3032453Z Collecting charset_normalizer<4,>=2 (from requests->-r requirements.txt (line 1))
+2026-06-14T13:32:37.3066348Z   Downloading charset_normalizer-3.4.7-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+2026-06-14T13:32:37.3334847Z Collecting idna<4,>=2.5 (from requests->-r requirements.txt (line 1))
+2026-06-14T13:32:37.3364470Z   Downloading idna-3.18-py3-none-any.whl.metadata (6.1 kB)
+2026-06-14T13:32:37.3562520Z Collecting urllib3<3,>=1.26 (from requests->-r requirements.txt (line 1))
+2026-06-14T13:32:37.3596178Z   Downloading urllib3-2.7.0-py3-none-any.whl.metadata (6.9 kB)
+2026-06-14T13:32:37.3771220Z Collecting certifi>=2023.5.7 (from requests->-r requirements.txt (line 1))
+2026-06-14T13:32:37.3811434Z   Downloading certifi-2026.5.20-py3-none-any.whl.metadata (2.5 kB)
+2026-06-14T13:32:37.3896555Z Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+2026-06-14T13:32:37.3979149Z Downloading charset_normalizer-3.4.7-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (214 kB)
+2026-06-14T13:32:37.4073990Z Downloading idna-3.18-py3-none-any.whl (65 kB)
+2026-06-14T13:32:37.4127648Z Downloading urllib3-2.7.0-py3-none-any.whl (131 kB)
+2026-06-14T13:32:37.4198434Z Downloading brotli-1.2.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.4 MB)
+2026-06-14T13:32:37.4314642Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.4/1.4 MB 147.6 MB/s  0:00:00
+2026-06-14T13:32:37.4348152Z Downloading certifi-2026.5.20-py3-none-any.whl (134 kB)
+2026-06-14T13:32:37.4717647Z Installing collected packages: brotli, urllib3, idna, charset_normalizer, certifi, requests
+2026-06-14T13:32:37.6905574Z 
+2026-06-14T13:32:37.6917019Z Successfully installed brotli-1.2.0 certifi-2026.5.20 charset_normalizer-3.4.7 idna-3.18 requests-2.34.2 urllib3-2.7.0
