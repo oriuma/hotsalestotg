@@ -27,7 +27,7 @@ _session.headers.update({
     "x-requested-with": "XMLHttpRequest",
 })
 
-# Fields confirmed present in pepper.pl GraphQL schema
+# Only fields confirmed working in pepper.pl GraphQL schema
 GQL_QUERY = """
 query DiscussionWidget($page: Int, $feed: String) {
   discussionWidget(
@@ -44,15 +44,8 @@ query DiscussionWidget($page: Int, $feed: String) {
       price
       nextBestPrice
       publishedDate
-      expiryDate
       commentCount
       shortLastPublishedTimeAgo
-      merchant {
-        merchantName
-      }
-      mainCategory {
-        name
-      }
       user {
         userId
         username
@@ -77,7 +70,7 @@ def _warm_up_session():
             timeout=15,
             headers={"accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"},
         )
-        print(f"[pepper_client] Warm-up GET /najgoretsze → {r.status_code}")
+        print(f"[pepper_client] Warm-up GET /najgoretsze -> {r.status_code}")
     except Exception as e:
         print(f"[pepper_client] Warm-up GET failed (non-fatal): {e}")
 
@@ -87,7 +80,7 @@ def _warm_up_session():
             timeout=15,
             json={},
         )
-        print(f"[pepper_client] bpn → {r2.status_code}")
+        print(f"[pepper_client] bpn -> {r2.status_code}")
         if r2.status_code == 200:
             try:
                 payload = r2.json()
@@ -95,12 +88,8 @@ def _warm_up_session():
                 if token:
                     _session.headers.update({"x-xsrf-token": token, "X-XSRF-TOKEN": token})
                     print(f"[pepper_client] XSRF token acquired")
-                else:
-                    print(f"[pepper_client] bpn: token not found in: {str(payload)[:300]}")
-            except JSONDecodeError as e:
-                print(f"[pepper_client] bpn not JSON: {e} | {r2.text[:200]!r}")
-        else:
-            print(f"[pepper_client] bpn non-200: {r2.text[:200]!r}")
+            except JSONDecodeError:
+                pass
     except Exception as e:
         print(f"[pepper_client] bpn failed (non-fatal): {e}")
 
@@ -145,12 +134,7 @@ def fetch_page(page: int) -> list[dict]:
                 try:
                     data = resp.json()
                 except JSONDecodeError:
-                    print(
-                        f"[pepper_client] Invalid JSON page={page} "
-                        f"attempt {attempt+1}/{MAX_RETRIES} "
-                        f"encoding={resp.headers.get('Content-Encoding','none')} "
-                        f"preview={resp.content[:120]!r}"
-                    )
+                    print(f"[pepper_client] Invalid JSON page={page} attempt {attempt+1}/{MAX_RETRIES}")
                     if attempt < MAX_RETRIES - 1:
                         time.sleep(RETRY_DELAYS[attempt])
                         continue
@@ -159,13 +143,12 @@ def fetch_page(page: int) -> list[dict]:
                 threads, errors = _extract_threads(data)
 
                 if errors:
-                    # Log just field names for easier debugging
                     err_msgs = [e.get("message", "") for e in errors]
                     print(f"[pepper_client] GraphQL errors page={page}: {err_msgs}")
                     if not threads:
                         return []
 
-                print(f"[pepper_client] page={page} → {len(threads)} threads")
+                print(f"[pepper_client] page={page} -> {len(threads)} threads")
                 return threads
 
             elif resp.status_code == 418:
@@ -210,19 +193,11 @@ def normalize_deal(thread: dict) -> dict | None:
     if not title or not url:
         return None
 
-    # Merchant and category from nested objects
-    merchant_obj = thread.get("merchant") or {}
-    merchant = merchant_obj.get("merchantName", "") if isinstance(merchant_obj, dict) else ""
-
-    category_obj = thread.get("mainCategory") or {}
-    category = category_obj.get("name", "") if isinstance(category_obj, dict) else ""
-
-    avatar_path = ((thread.get("user") or {}).get("avatar") or {}).get("path", "")
-
-    # Temperature: real value from API, no fallback magic number
     temperature = thread.get("temperature")
     if temperature is None:
         temperature = 0
+
+    avatar_path = ((thread.get("user") or {}).get("avatar") or {}).get("path", "")
 
     return {
         "id":            thread_id,
@@ -231,10 +206,9 @@ def normalize_deal(thread: dict) -> dict | None:
         "temperature":   temperature,
         "price":         thread.get("price"),
         "next_price":    thread.get("nextBestPrice"),
-        "merchant":      merchant,
-        "category":      category,
+        "merchant":      "",
+        "category":      "",
         "published":     thread.get("publishedDate", ""),
-        "expiry":        thread.get("expiryDate", ""),
         "image_url":     f"https://www.pepper.pl{avatar_path}" if avatar_path else "",
         "comment_count": thread.get("commentCount", 0),
     }
