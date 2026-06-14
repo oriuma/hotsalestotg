@@ -1,27 +1,43 @@
 from datetime import datetime, timezone
 
 
-def _fmt_published(iso: str | None) -> str:
+def _fmt_date(iso: str | None, prefix: str) -> str:
+    """Format an ISO date string into a human-readable line."""
     if not iso:
         return ""
     try:
         dt = datetime.fromisoformat(iso.replace("Z", "+00:00"))
         now = datetime.now(timezone.utc)
         diff = int((now - dt).total_seconds())
-        if diff < 60:
-            return f"{diff} sek. temu"
-        elif diff < 3600:
-            return f"{diff // 60} min. temu"
-        elif diff < 86400:
-            return f"{diff // 3600} godz. temu"
-        else:
-            return f"{diff // 86400} dni temu ({dt.strftime('%d.%m.%Y')})"
+
+        if prefix == "added":  # published - how long ago
+            if diff < 60:
+                return f"⏰ Dodano: {diff} sek. temu"
+            elif diff < 3600:
+                return f"⏰ Dodano: {diff // 60} min. temu"
+            elif diff < 86400:
+                return f"⏰ Dodano: {diff // 3600} godz. temu"
+            else:
+                return f"⏰ Dodano: {diff // 86400} dni temu ({dt.strftime('%d.%m.%Y')})"
+        else:  # expiry - time remaining or already expired
+            remaining = int((dt - now).total_seconds())
+            if remaining <= 0:
+                return f"⌛ Wygasło: {dt.strftime('%d.%m.%Y %H:%M')}"
+            elif remaining < 3600:
+                return f"⌛ Kończy się za: {remaining // 60} min."
+            elif remaining < 86400:
+                h = remaining // 3600
+                m = (remaining % 3600) // 60
+                return f"⌛ Kończy się za: {h}h {m}min ({dt.strftime('%d.%m %H:%M')})"
+            else:
+                days = remaining // 86400
+                return f"⌛ Kończy się za: {days} dni ({dt.strftime('%d.%m.%Y')})"
     except Exception:
         return ""
 
 
 def build_caption(deal: dict) -> str:
-    title       = deal.get("title", "Brak tytu\u0142u")
+    title       = deal.get("title", "Brak tytułu")
     url         = deal.get("url", "")
     temperature = deal.get("temperature", 0)
     price       = deal.get("price")
@@ -29,39 +45,44 @@ def build_caption(deal: dict) -> str:
     merchant    = deal.get("merchant", "")
     category    = deal.get("category", "")
     published   = deal.get("published", "")
+    expiry      = deal.get("expiry", "")
 
     # Price line
     if price is not None and str(price).strip() not in ("", "0", "0.0"):
         price_str = str(price).rstrip("0").rstrip(".")
-        price_line = f"\U0001f4b0 <b>{price_str} z\u0142</b>"
+        price_line = f"💰 <b>{price_str} zł</b>"
         if next_price is not None and str(next_price).strip() not in ("", "0", "0.0"):
             np_str = str(next_price).rstrip("0").rstrip(".")
             try:
                 disc = round((1 - float(price) / float(next_price)) * 100)
-                price_line += f"  <s>{np_str} z\u0142</s>  <b>(-{disc}%)</b>"
+                price_line += f"  <s>{np_str} zł</s>  <b>(-{disc}%)</b>"
             except (ValueError, ZeroDivisionError):
                 pass
     else:
-        price_line = "\U0001f4b0 <b>Bezp\u0142atnie / sprawd\u017a cen\u0119</b>"
+        price_line = "💰 <b>Bezpłatnie / sprawdź cenę</b>"
 
     lines = [
-        f"\U0001f525 <b>{title}</b>",
+        f"🔥 <b>{title}</b>",
         "",
         price_line,
-        f"\U0001f321 Temperatura: <b>{temperature}\u00b0</b>",
+        f"🌡 Temperatura: <b>{temperature}°</b>",
     ]
 
     if merchant:
-        lines.append(f"\U0001f3ea {merchant}")
+        lines.append(f"🏪 {merchant}")
     if category:
-        lines.append(f"\U0001f5c2 {category}")
+        lines.append(f"🗂 {category}")
 
-    ago = _fmt_published(published)
-    if ago:
-        lines.append(f"\u23f0 Dodano: {ago}")
+    added_line = _fmt_date(published, "added")
+    if added_line:
+        lines.append(added_line)
+
+    expiry_line = _fmt_date(expiry, "expiry")
+    if expiry_line:
+        lines.append(expiry_line)
 
     if url:
         lines.append("")
-        lines.append(f'\U0001f517 <a href="{url}">Zobacz na Pepper.pl \u2192</a>')
+        lines.append(f'🔗 <a href="{url}">Zobacz na Pepper.pl →</a>')
 
     return "\n".join(lines)
