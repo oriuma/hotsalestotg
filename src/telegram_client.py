@@ -1,55 +1,71 @@
 import time
 import requests
 from src.config import TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, TELEGRAM_SLEEP_SECONDS
+from src.formatter import build_caption
 
-TG_API = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}"
+_BASE = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}"
 
 
-def send_message(text: str, parse_mode: str = "HTML") -> bool:
-    url = f"{TG_API}/sendMessage"
-    payload = {
-        "chat_id": TELEGRAM_CHAT_ID,
-        "text": text,
-        "parse_mode": parse_mode,
-        "disable_web_page_preview": False,
-    }
+def send_deal(deal: dict, ai_score: str = "") -> bool:
+    """
+    Send a single deal to the Telegram channel.
+    Returns True on success, False on failure.
+    """
+    caption = build_caption(deal, ai_score=ai_score)
+    image_url = deal.get("image_url", "")
+
+    if image_url:
+        ok = _send_photo(image_url, caption)
+        if not ok:
+            ok = _send_message(caption)
+    else:
+        ok = _send_message(caption)
+
+    if ok:
+        time.sleep(TELEGRAM_SLEEP_SECONDS)
+    return ok
+
+
+def _send_photo(image_url: str, caption: str) -> bool:
     try:
-        resp = requests.post(url, json=payload, timeout=15)
-        resp.raise_for_status()
-        return True
+        resp = requests.post(
+            f"{_BASE}/sendPhoto",
+            json={
+                "chat_id": TELEGRAM_CHAT_ID,
+                "photo": image_url,
+                "caption": caption,
+                "parse_mode": "HTML",
+                "disable_web_page_preview": False,
+            },
+            timeout=15,
+        )
+        data = resp.json()
+        if data.get("ok"):
+            return True
+        print(f"[telegram] sendPhoto failed: {data.get('description')}")
+        return False
     except Exception as e:
-        print(f"[Telegram] sendMessage error: {e}")
+        print(f"[telegram] sendPhoto exception: {e}")
         return False
 
 
-def send_photo(photo_url: str, caption: str, parse_mode: str = "HTML") -> bool:
-    url = f"{TG_API}/sendPhoto"
-    payload = {
-        "chat_id": TELEGRAM_CHAT_ID,
-        "photo": photo_url,
-        "caption": caption,
-        "parse_mode": parse_mode,
-    }
+def _send_message(caption: str) -> bool:
     try:
-        resp = requests.post(url, json=payload, timeout=15)
-        resp.raise_for_status()
-        return True
-    except Exception as e:
-        print(f"[Telegram] sendPhoto error: {e}")
+        resp = requests.post(
+            f"{_BASE}/sendMessage",
+            json={
+                "chat_id": TELEGRAM_CHAT_ID,
+                "text": caption,
+                "parse_mode": "HTML",
+                "disable_web_page_preview": True,
+            },
+            timeout=15,
+        )
+        data = resp.json()
+        if data.get("ok"):
+            return True
+        print(f"[telegram] sendMessage failed: {data.get('description')}")
         return False
-
-
-def send_deal(deal: dict) -> bool:
-    from src.formatter import build_caption
-
-    caption = build_caption(deal)
-    photo   = deal.get("image_url")
-
-    success = False
-    if photo:
-        success = send_photo(photo, caption)
-    if not success:
-        success = send_message(caption)
-
-    time.sleep(TELEGRAM_SLEEP_SECONDS)
-    return success
+    except Exception as e:
+        print(f"[telegram] sendMessage exception: {e}")
+        return False

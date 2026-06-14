@@ -3,6 +3,7 @@ from src.config import MAX_PAGES, STATE_FILE
 from src.state import load_sent_ids, save_sent_ids, push_state_to_github
 from src.pepper_client import fetch_page, normalize_deal, is_valid_deal
 from src.telegram_client import send_deal
+from src.ai_scorer import score_deal
 
 GITHUB_REPO        = os.environ.get("GITHUB_REPOSITORY", "oriuma/hotsalestotg")
 REMOTE_STATE_PATH  = "data/seen_ids.json"
@@ -37,7 +38,11 @@ def main():
                 continue
 
             print(f"[main] New deal: {deal['title'][:60]} | temp={deal['temperature']}")
-            success = send_deal(deal)
+
+            # AI scoring (non-blocking: if it fails, post goes out without score)
+            ai_score = score_deal(deal)
+
+            success = send_deal(deal, ai_score=ai_score)
 
             if success:
                 sent_ids.add(deal["id"])

@@ -21,12 +21,14 @@ def time_ago(published_at: str) -> str:
         return ""
 
 
-def build_caption(deal: dict) -> str:
+def build_caption(deal: dict, ai_score: str = "") -> str:
     """
     Build an HTML-formatted Telegram caption for one pepper.pl deal.
 
     Expected deal keys:
         title, url, temperature, price, next_price, merchant, category, published, image_url
+    Optional:
+        ai_score  - short string like '8/10 — Хорошая скидка'
     """
     title       = deal.get("title", "Brak tytułu")
     url         = deal.get("url", "")
@@ -54,6 +56,10 @@ def build_caption(deal: dict) -> str:
         price_line,
         f"🌡 Temperatura: <b>{temperature}°</b>",
     ]
+
+    if ai_score:
+        lines.append(f"🧠 Оценка AI: <b>{ai_score}</b>")
+
     if merchant:
         lines.append(f"🏪 {merchant}")
     if category:
