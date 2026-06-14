@@ -1,0 +1,31 @@
+﻿2026-06-14T13:47:52.9185170Z Current runner version: '2.335.1'
+2026-06-14T13:47:52.9213556Z ##[group]Runner Image Provisioner
+2026-06-14T13:47:52.9214635Z Hosted Compute Agent
+2026-06-14T13:47:52.9215284Z Version: 20260527.539
+2026-06-14T13:47:52.9215952Z Commit: a891dd388383b896fa6ac04a82c0b75cec981078
+2026-06-14T13:47:52.9217115Z Build Date: 2026-05-27T21:39:57Z
+2026-06-14T13:47:52.9217932Z Worker ID: {48a37457-4e6e-4729-8723-b00bf72775e9}
+2026-06-14T13:47:52.9218755Z Azure Region: eastus
+2026-06-14T13:47:52.9219386Z ##[endgroup]
+2026-06-14T13:47:52.9221197Z ##[group]Operating System
+2026-06-14T13:47:52.9221977Z Ubuntu
+2026-06-14T13:47:52.9222567Z 24.04.4
+2026-06-14T13:47:52.9223267Z LTS
+2026-06-14T13:47:52.9223930Z ##[endgroup]
+2026-06-14T13:47:52.9224564Z ##[group]Runner Image
+2026-06-14T13:47:52.9225285Z Image: ubuntu-24.04
+2026-06-14T13:47:52.9225947Z Version: 20260607.184.1
+2026-06-14T13:47:52.9227327Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260607.184/images/ubuntu/Ubuntu2404-Readme.md
+2026-06-14T13:47:52.9229199Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260607.184
+2026-06-14T13:47:52.9230267Z ##[endgroup]
+2026-06-14T13:47:52.9231971Z ##[group]GITHUB_TOKEN Permissions
+2026-06-14T13:47:52.9234252Z Contents: write
+2026-06-14T13:47:52.9234998Z Metadata: read
+2026-06-14T13:47:52.9235658Z ##[endgroup]
+2026-06-14T13:47:52.9238218Z Secret source: Actions
+2026-06-14T13:47:52.9239178Z Prepare workflow directory
+2026-06-14T13:47:52.9625989Z Prepare all required actions
+2026-06-14T13:47:52.9664480Z Getting action download info
+2026-06-14T13:47:53.2161598Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-06-14T13:47:53.3101624Z Download action repository 'actions/setup-python@v5.6.0' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-06-14T13:47:53.4932952Z Complete job name: run-scraper
