@@ -1,0 +1,376 @@
+﻿2026-06-14T14:36:42.8039712Z Current runner version: '2.335.1'
+2026-06-14T14:36:42.8066481Z ##[group]Runner Image Provisioner
+2026-06-14T14:36:42.8067718Z Hosted Compute Agent
+2026-06-14T14:36:42.8068387Z Version: 20260527.539
+2026-06-14T14:36:42.8069070Z Commit: a891dd388383b896fa6ac04a82c0b75cec981078
+2026-06-14T14:36:42.8070020Z Build Date: 2026-05-27T21:39:57Z
+2026-06-14T14:36:42.8070746Z Worker ID: {b628d307-d0ae-48a5-9fa4-07ab881a540a}
+2026-06-14T14:36:42.8071553Z Azure Region: eastus2
+2026-06-14T14:36:42.8072194Z ##[endgroup]
+2026-06-14T14:36:42.8074420Z ##[group]Operating System
+2026-06-14T14:36:42.8075269Z Ubuntu
+2026-06-14T14:36:42.8075847Z 24.04.4
+2026-06-14T14:36:42.8076514Z LTS
+2026-06-14T14:36:42.8077269Z ##[endgroup]
+2026-06-14T14:36:42.8077943Z ##[group]Runner Image
+2026-06-14T14:36:42.8078677Z Image: ubuntu-24.04
+2026-06-14T14:36:42.8079302Z Version: 20260607.184.1
+2026-06-14T14:36:42.8080715Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260607.184/images/ubuntu/Ubuntu2404-Readme.md
+2026-06-14T14:36:42.8082336Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260607.184
+2026-06-14T14:36:42.8083425Z ##[endgroup]
+2026-06-14T14:36:42.8085104Z ##[group]GITHUB_TOKEN Permissions
+2026-06-14T14:36:42.8087543Z Contents: write
+2026-06-14T14:36:42.8088385Z Metadata: read
+2026-06-14T14:36:42.8089003Z ##[endgroup]
+2026-06-14T14:36:42.8091204Z Secret source: Actions
+2026-06-14T14:36:42.8092227Z Prepare workflow directory
+2026-06-14T14:36:42.8478877Z Prepare all required actions
+2026-06-14T14:36:42.8517758Z Getting action download info
+2026-06-14T14:36:43.1080292Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-06-14T14:36:43.1824742Z Download action repository 'actions/setup-python@v5.6.0' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-06-14T14:36:43.3671658Z Complete job name: run-scraper
+2026-06-14T14:36:43.4409429Z ##[group]Run actions/checkout@v4
+2026-06-14T14:36:43.4410392Z with:
+2026-06-14T14:36:43.4410861Z   persist-credentials: true
+2026-06-14T14:36:43.4411418Z   fetch-depth: 0
+2026-06-14T14:36:43.4411890Z   repository: oriuma/hotsalestotg
+2026-06-14T14:36:43.4416661Z   token: ***
+2026-06-14T14:36:43.4417529Z   ssh-strict: true
+2026-06-14T14:36:43.4418105Z   ssh-user: git
+2026-06-14T14:36:43.4418564Z   clean: true
+2026-06-14T14:36:43.4419025Z   sparse-checkout-cone-mode: true
+2026-06-14T14:36:43.4419569Z   fetch-tags: false
+2026-06-14T14:36:43.4420031Z   show-progress: true
+2026-06-14T14:36:43.4420498Z   lfs: false
+2026-06-14T14:36:43.4420937Z   submodules: false
+2026-06-14T14:36:43.4421406Z   set-safe-directory: true
+2026-06-14T14:36:43.4422186Z env:
+2026-06-14T14:36:43.4422645Z   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+2026-06-14T14:36:43.4423227Z ##[endgroup]
+2026-06-14T14:36:43.5397329Z Syncing repository: oriuma/hotsalestotg
+2026-06-14T14:36:43.5399401Z ##[group]Getting Git version info
+2026-06-14T14:36:43.5400243Z Working directory is '/home/runner/work/hotsalestotg/hotsalestotg'
+2026-06-14T14:36:43.5401388Z [command]/usr/bin/git version
+2026-06-14T14:36:43.5456604Z git version 2.54.0
+2026-06-14T14:36:43.5509092Z ##[endgroup]
+2026-06-14T14:36:43.5522965Z Temporarily overriding HOME='/home/runner/work/_temp/494c1ec6-2d1a-43ea-ab97-ffbb655dac81' before making global git config changes
+2026-06-14T14:36:43.5528497Z Adding repository directory to the temporary git global config as a safe directory
+2026-06-14T14:36:43.5529787Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/hotsalestotg/hotsalestotg
+2026-06-14T14:36:43.5574513Z Deleting the contents of '/home/runner/work/hotsalestotg/hotsalestotg'
+2026-06-14T14:36:43.5578663Z ##[group]Initializing the repository
+2026-06-14T14:36:43.5583384Z [command]/usr/bin/git init /home/runner/work/hotsalestotg/hotsalestotg
+2026-06-14T14:36:43.5674932Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-06-14T14:36:43.5676235Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-06-14T14:36:43.5678073Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-06-14T14:36:43.5679241Z hint: call:
+2026-06-14T14:36:43.5679888Z hint:
+2026-06-14T14:36:43.5680687Z hint: 	git config --global init.defaultBranch <name>
+2026-06-14T14:36:43.5681731Z hint:
+2026-06-14T14:36:43.5682558Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-06-14T14:36:43.5683824Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-06-14T14:36:43.5684576Z hint:
+2026-06-14T14:36:43.5685018Z hint: 	git branch -m <name>
+2026-06-14T14:36:43.5685522Z hint:
+2026-06-14T14:36:43.5686156Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-06-14T14:36:43.5687570Z Initialized empty Git repository in /home/runner/work/hotsalestotg/hotsalestotg/.git/
+2026-06-14T14:36:43.5691180Z [command]/usr/bin/git remote add origin https://github.com/oriuma/hotsalestotg
+2026-06-14T14:36:43.5733709Z ##[endgroup]
+2026-06-14T14:36:43.5734552Z ##[group]Disabling automatic garbage collection
+2026-06-14T14:36:43.5737313Z [command]/usr/bin/git config --local gc.auto 0
+2026-06-14T14:36:43.5767328Z ##[endgroup]
+2026-06-14T14:36:43.5768112Z ##[group]Setting up auth
+2026-06-14T14:36:43.5773324Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-06-14T14:36:43.5807646Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-06-14T14:36:43.6141334Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-06-14T14:36:43.6174234Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-06-14T14:36:43.6405184Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-06-14T14:36:43.6436522Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-06-14T14:36:43.6664083Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-06-14T14:36:43.6699381Z ##[endgroup]
+2026-06-14T14:36:43.6700230Z ##[group]Fetching the repository
+2026-06-14T14:36:43.6708699Z [command]/usr/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-06-14T14:36:43.9770423Z From https://github.com/oriuma/hotsalestotg
+2026-06-14T14:36:43.9772190Z  * [new branch]      fix/pepper-graphql -> origin/fix/pepper-graphql
+2026-06-14T14:36:43.9773650Z  * [new branch]      main               -> origin/main
+2026-06-14T14:36:43.9814602Z [command]/usr/bin/git branch --list --remote origin/main
+2026-06-14T14:36:43.9842184Z   origin/main
+2026-06-14T14:36:43.9853035Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+2026-06-14T14:36:43.9876055Z 46891a550a7c77c77c9ce4c02c5820fed30351d2
+2026-06-14T14:36:43.9880935Z ##[endgroup]
+2026-06-14T14:36:43.9881956Z ##[group]Determining the checkout info
+2026-06-14T14:36:43.9882944Z ##[endgroup]
+2026-06-14T14:36:43.9888139Z [command]/usr/bin/git sparse-checkout disable
+2026-06-14T14:36:43.9936275Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-06-14T14:36:43.9966652Z ##[group]Checking out the ref
+2026-06-14T14:36:43.9971727Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-06-14T14:36:44.0031538Z Switched to a new branch 'main'
+2026-06-14T14:36:44.0034046Z branch 'main' set up to track 'origin/main'.
+2026-06-14T14:36:44.0040633Z ##[endgroup]
+2026-06-14T14:36:44.0081334Z [command]/usr/bin/git log -1 --format=%H
+2026-06-14T14:36:44.0105377Z 46891a550a7c77c77c9ce4c02c5820fed30351d2
+2026-06-14T14:36:44.0385195Z ##[group]Run actions/setup-python@v5.6.0
+2026-06-14T14:36:44.0385879Z with:
+2026-06-14T14:36:44.0386572Z   python-version: 3.11
+2026-06-14T14:36:44.0387343Z   check-latest: false
+2026-06-14T14:36:44.0392494Z   token: ***
+2026-06-14T14:36:44.0393002Z   update-environment: true
+2026-06-14T14:36:44.0393574Z   allow-prereleases: false
+2026-06-14T14:36:44.0394113Z   freethreaded: false
+2026-06-14T14:36:44.0394621Z env:
+2026-06-14T14:36:44.0395108Z   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+2026-06-14T14:36:44.0395757Z ##[endgroup]
+2026-06-14T14:36:44.1710502Z ##[group]Installed versions
+2026-06-14T14:36:44.1803958Z (node:2286) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-06-14T14:36:44.1806100Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-06-14T14:36:44.1807789Z Successfully set up CPython (3.11.15)
+2026-06-14T14:36:44.1809280Z ##[endgroup]
+2026-06-14T14:36:44.2042313Z ##[group]Run python -m pip install --upgrade pip
+2026-06-14T14:36:44.2043264Z [36;1mpython -m pip install --upgrade pip[0m
+2026-06-14T14:36:44.2044055Z [36;1mpip install -r requirements.txt[0m
+2026-06-14T14:36:44.2212969Z shell: /usr/bin/bash -e {0}
+2026-06-14T14:36:44.2213584Z env:
+2026-06-14T14:36:44.2214090Z   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+2026-06-14T14:36:44.2214892Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:44.2215853Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-06-14T14:36:44.2216820Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:44.2217949Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:44.2218871Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:44.2219790Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-06-14T14:36:44.2220587Z ##[endgroup]
+2026-06-14T14:36:45.2170906Z Requirement already satisfied: pip in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (26.1.2)
+2026-06-14T14:36:45.9287791Z Collecting requests (from -r requirements.txt (line 1))
+2026-06-14T14:36:45.9956831Z   Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+2026-06-14T14:36:46.0825893Z Collecting openai (from -r requirements.txt (line 2))
+2026-06-14T14:36:46.0914849Z   Downloading openai-2.41.1-py3-none-any.whl.metadata (32 kB)
+2026-06-14T14:36:46.1999713Z Collecting charset_normalizer<4,>=2 (from requests->-r requirements.txt (line 1))
+2026-06-14T14:36:46.2088412Z   Downloading charset_normalizer-3.4.7-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+2026-06-14T14:36:46.2347548Z Collecting idna<4,>=2.5 (from requests->-r requirements.txt (line 1))
+2026-06-14T14:36:46.2425894Z   Downloading idna-3.18-py3-none-any.whl.metadata (6.1 kB)
+2026-06-14T14:36:46.2667928Z Collecting urllib3<3,>=1.26 (from requests->-r requirements.txt (line 1))
+2026-06-14T14:36:46.2747305Z   Downloading urllib3-2.7.0-py3-none-any.whl.metadata (6.9 kB)
+2026-06-14T14:36:46.2963272Z Collecting certifi>=2023.5.7 (from requests->-r requirements.txt (line 1))
+2026-06-14T14:36:46.3036038Z   Downloading certifi-2026.5.20-py3-none-any.whl.metadata (2.5 kB)
+2026-06-14T14:36:46.3249720Z Collecting anyio<5,>=3.5.0 (from openai->-r requirements.txt (line 2))
+2026-06-14T14:36:46.3335841Z   Downloading anyio-4.13.0-py3-none-any.whl.metadata (4.5 kB)
+2026-06-14T14:36:46.3521799Z Collecting distro<2,>=1.7.0 (from openai->-r requirements.txt (line 2))
+2026-06-14T14:36:46.3598611Z   Downloading distro-1.9.0-py3-none-any.whl.metadata (6.8 kB)
+2026-06-14T14:36:46.3815629Z Collecting httpx<1,>=0.23.0 (from openai->-r requirements.txt (line 2))
+2026-06-14T14:36:46.3893464Z   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+2026-06-14T14:36:46.4761970Z Collecting jiter<1,>=0.10.0 (from openai->-r requirements.txt (line 2))
+2026-06-14T14:36:46.4842796Z   Downloading jiter-0.15.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (5.2 kB)
+2026-06-14T14:36:46.5909624Z Collecting pydantic<3,>=1.9.0 (from openai->-r requirements.txt (line 2))
+2026-06-14T14:36:46.5985729Z   Downloading pydantic-2.13.4-py3-none-any.whl.metadata (109 kB)
+2026-06-14T14:36:46.6265215Z Collecting sniffio (from openai->-r requirements.txt (line 2))
+2026-06-14T14:36:46.6347508Z   Downloading sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
+2026-06-14T14:36:46.6647201Z Collecting tqdm>4 (from openai->-r requirements.txt (line 2))
+2026-06-14T14:36:46.6719812Z   Downloading tqdm-4.68.2-py3-none-any.whl.metadata (58 kB)
+2026-06-14T14:36:46.6999477Z Collecting typing-extensions<5,>=4.11 (from openai->-r requirements.txt (line 2))
+2026-06-14T14:36:46.7074250Z   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+2026-06-14T14:36:46.7296500Z Collecting httpcore==1.* (from httpx<1,>=0.23.0->openai->-r requirements.txt (line 2))
+2026-06-14T14:36:46.7385070Z   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+2026-06-14T14:36:46.7606695Z Collecting h11>=0.16 (from httpcore==1.*->httpx<1,>=0.23.0->openai->-r requirements.txt (line 2))
+2026-06-14T14:36:46.7683109Z   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+2026-06-14T14:36:46.7836748Z Collecting annotated-types>=0.6.0 (from pydantic<3,>=1.9.0->openai->-r requirements.txt (line 2))
+2026-06-14T14:36:46.7912802Z   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+2026-06-14T14:36:47.4845169Z Collecting pydantic-core==2.46.4 (from pydantic<3,>=1.9.0->openai->-r requirements.txt (line 2))
+2026-06-14T14:36:47.4921507Z   Downloading pydantic_core-2.46.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.6 kB)
+2026-06-14T14:36:47.6030297Z Collecting typing-inspection>=0.4.2 (from pydantic<3,>=1.9.0->openai->-r requirements.txt (line 2))
+2026-06-14T14:36:47.6101196Z   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+2026-06-14T14:36:47.6240550Z Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+2026-06-14T14:36:47.6389786Z Downloading charset_normalizer-3.4.7-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (214 kB)
+2026-06-14T14:36:47.6643749Z Downloading idna-3.18-py3-none-any.whl (65 kB)
+2026-06-14T14:36:47.6758367Z Downloading urllib3-2.7.0-py3-none-any.whl (131 kB)
+2026-06-14T14:36:47.6932507Z Downloading openai-2.41.1-py3-none-any.whl (1.4 MB)
+2026-06-14T14:36:47.7670828Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.4/1.4 MB 19.9 MB/s  0:00:00
+2026-06-14T14:36:47.7745083Z Downloading anyio-4.13.0-py3-none-any.whl (114 kB)
+2026-06-14T14:36:47.7852591Z Downloading distro-1.9.0-py3-none-any.whl (20 kB)
+2026-06-14T14:36:47.7958233Z Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+2026-06-14T14:36:47.8052969Z Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+2026-06-14T14:36:47.8148566Z Downloading jiter-0.15.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (349 kB)
+2026-06-14T14:36:47.8358123Z Downloading pydantic-2.13.4-py3-none-any.whl (472 kB)
+2026-06-14T14:36:47.8588431Z Downloading pydantic_core-2.46.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+2026-06-14T14:36:47.9133834Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 39.6 MB/s  0:00:00
+2026-06-14T14:36:47.9220466Z Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+2026-06-14T14:36:47.9312838Z Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+2026-06-14T14:36:47.9411815Z Downloading certifi-2026.5.20-py3-none-any.whl (134 kB)
+2026-06-14T14:36:47.9503485Z Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+2026-06-14T14:36:47.9597458Z Downloading tqdm-4.68.2-py3-none-any.whl (78 kB)
+2026-06-14T14:36:47.9687389Z Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+2026-06-14T14:36:47.9938523Z Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
+2026-06-14T14:36:48.0566736Z Installing collected packages: urllib3, typing-extensions, tqdm, sniffio, jiter, idna, h11, distro, charset_normalizer, certifi, annotated-types, typing-inspection, requests, pydantic-core, httpcore, anyio, pydantic, httpx, openai
+2026-06-14T14:36:49.7269371Z 
+2026-06-14T14:36:49.7284179Z Successfully installed annotated-types-0.7.0 anyio-4.13.0 certifi-2026.5.20 charset_normalizer-3.4.7 distro-1.9.0 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 idna-3.18 jiter-0.15.0 openai-2.41.1 pydantic-2.13.4 pydantic-core-2.46.4 requests-2.34.2 sniffio-1.3.1 tqdm-4.68.2 typing-extensions-4.15.0 typing-inspection-0.4.2 urllib3-2.7.0
+2026-06-14T14:36:49.8498255Z ##[group]Run mkdir -p data
+2026-06-14T14:36:49.8498591Z [36;1mmkdir -p data[0m
+2026-06-14T14:36:49.8498961Z [36;1mtest -f data/seen_ids.json || echo '[]' > data/seen_ids.json[0m
+2026-06-14T14:36:49.8535284Z shell: /usr/bin/bash -e {0}
+2026-06-14T14:36:49.8535561Z env:
+2026-06-14T14:36:49.8535799Z   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+2026-06-14T14:36:49.8536190Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:49.8536645Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-06-14T14:36:49.8537334Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:49.8537723Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:49.8538142Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:49.8538529Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-06-14T14:36:49.8538872Z ##[endgroup]
+2026-06-14T14:36:49.8650329Z ##[group]Run python main.py
+2026-06-14T14:36:49.8650633Z [36;1mpython main.py[0m
+2026-06-14T14:36:49.8683652Z shell: /usr/bin/bash -e {0}
+2026-06-14T14:36:49.8683922Z env:
+2026-06-14T14:36:49.8684161Z   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+2026-06-14T14:36:49.8684537Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:49.8684987Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-06-14T14:36:49.8685422Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:49.8685811Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:49.8686201Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:49.8686615Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-06-14T14:36:49.8687623Z   TELEGRAM_BOT_TOKEN: ***
+2026-06-14T14:36:49.8687892Z   TELEGRAM_CHAT_ID: ***
+2026-06-14T14:36:49.8691078Z   GITHUB_TOKEN: ***
+2026-06-14T14:36:49.8691369Z   STATE_FILE: data/seen_ids.json
+2026-06-14T14:36:49.8691646Z   MIN_TEMPERATURE: 0
+2026-06-14T14:36:49.8691872Z   MAX_PAGES: 3
+2026-06-14T14:36:49.8692086Z ##[endgroup]
+2026-06-14T14:37:17.7443457Z [main] Loading state from data/seen_ids.json
+2026-06-14T14:37:17.7445696Z [main] Already sent: 33 deals
+2026-06-14T14:37:17.7446580Z [main] Fetching page 1/3
+2026-06-14T14:37:17.7447216Z [pepper_client] Warm-up GET /najgoretsze -> 200
+2026-06-14T14:37:17.7447706Z [pepper_client] bpn -> 200
+2026-06-14T14:37:17.7447991Z [pepper_client] XSRF token acquired
+2026-06-14T14:37:17.7448282Z [pepper_client] page=1 -> 20 threads
+2026-06-14T14:37:17.7448570Z [main] Fetching page 2/3
+2026-06-14T14:37:17.7448828Z [pepper_client] page=2 -> 20 threads
+2026-06-14T14:37:17.7449828Z [main] New deal: (Pitbull) Limitowana koszulka, której cały dochód ze sprzeda | temp=999
+2026-06-14T14:37:17.7450376Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7450843Z [telegram] sendPhoto failed: Bad Request: wrong type of the web page content
+2026-06-14T14:37:17.7451290Z [main] New deal: Laresar V7 czy X11? | temp=999
+2026-06-14T14:37:17.7451656Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7452103Z [telegram] sendPhoto failed: Bad Request: wrong type of the web page content
+2026-06-14T14:37:17.7452576Z [telegram] sendMessage failed: Too Many Requests: retry after 15
+2026-06-14T14:37:17.7452946Z [main] Failed to send deal 1041236
+2026-06-14T14:37:17.7453377Z [main] New deal: Polski Amazon, kupowanie na fakturę VAT | temp=999
+2026-06-14T14:37:17.7453811Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7454220Z [telegram] sendMessage failed: Too Many Requests: retry after 15
+2026-06-14T14:37:17.7454589Z [main] Failed to send deal 370503
+2026-06-14T14:37:17.7455460Z [main] New deal: Uwaga nowy scam oszustwo na olx - przestrzegam, informuje, u | temp=999
+2026-06-14T14:37:17.7455940Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7456351Z [telegram] sendMessage failed: Too Many Requests: retry after 15
+2026-06-14T14:37:17.7456713Z [main] Failed to send deal 1179975
+2026-06-14T14:37:17.7457272Z [main] New deal: OLX - nowe funkcje | temp=999
+2026-06-14T14:37:17.7457651Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7458054Z [telegram] sendMessage failed: Too Many Requests: retry after 14
+2026-06-14T14:37:17.7458405Z [main] Failed to send deal 1184592
+2026-06-14T14:37:17.7458760Z [main] New deal: IGPSPORT BSC300/iGS630s - Informacje o mapach | temp=999
+2026-06-14T14:37:17.7459185Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7459569Z [telegram] sendPhoto failed: Too Many Requests: retry after 14
+2026-06-14T14:37:17.7459980Z [telegram] sendMessage failed: Too Many Requests: retry after 14
+2026-06-14T14:37:17.7460328Z [main] Failed to send deal 1046955
+2026-06-14T14:37:17.7460788Z [main] New deal: Laresar V7 - instrukcja wymiany pękniętej rury | temp=999
+2026-06-14T14:37:17.7461510Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7461922Z [telegram] sendPhoto failed: Too Many Requests: retry after 13
+2026-06-14T14:37:17.7462357Z [telegram] sendMessage failed: Too Many Requests: retry after 13
+2026-06-14T14:37:17.7462711Z [main] Failed to send deal 1223663
+2026-06-14T14:37:17.7463189Z [main] New deal: Kubki mistrzostw świata FIFA World Cup 2026 w McDonald's | temp=999
+2026-06-14T14:37:17.7463669Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7464075Z [telegram] sendPhoto failed: Too Many Requests: retry after 13
+2026-06-14T14:37:17.7464483Z [telegram] sendMessage failed: Too Many Requests: retry after 12
+2026-06-14T14:37:17.7464930Z [main] Failed to send deal 1294564
+2026-06-14T14:37:17.7465374Z [main] New deal: jak kupić coś przez sms? | temp=999
+2026-06-14T14:37:17.7465743Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7466120Z [telegram] sendPhoto failed: Too Many Requests: retry after 12
+2026-06-14T14:37:17.7466520Z [telegram] sendMessage failed: Too Many Requests: retry after 12
+2026-06-14T14:37:17.7466864Z [main] Failed to send deal 970225
+2026-06-14T14:37:17.7467293Z [main] New deal: Efragola perfumeria, legitny? | temp=999
+2026-06-14T14:37:17.7467659Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7468029Z [telegram] sendPhoto failed: Too Many Requests: retry after 11
+2026-06-14T14:37:17.7468417Z [telegram] sendMessage failed: Too Many Requests: retry after 11
+2026-06-14T14:37:17.7468763Z [main] Failed to send deal 944141
+2026-06-14T14:37:17.7469150Z [main] New deal: Stowarzyszenie do medicover sport lub innego pakietu | temp=999
+2026-06-14T14:37:17.7469606Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7469993Z [telegram] sendPhoto failed: Too Many Requests: retry after 11
+2026-06-14T14:37:17.7470394Z [telegram] sendMessage failed: Too Many Requests: retry after 10
+2026-06-14T14:37:17.7470733Z [main] Failed to send deal 1248980
+2026-06-14T14:37:17.7471133Z [main] New deal: Aliexpress, wysyłka EU i faktura VAT | temp=999
+2026-06-14T14:37:17.7471514Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7471890Z [telegram] sendMessage failed: Too Many Requests: retry after 10
+2026-06-14T14:37:17.7472237Z [main] Failed to send deal 980023
+2026-06-14T14:37:17.7472607Z [main] New deal: Gwarancja / rękojmia na Aliexpress | temp=999
+2026-06-14T14:37:17.7472972Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7473377Z [telegram] sendPhoto failed: Too Many Requests: retry after 10
+2026-06-14T14:37:17.7473886Z [telegram] sendMessage failed: Too Many Requests: retry after 9
+2026-06-14T14:37:17.7474228Z [main] Failed to send deal 911550
+2026-06-14T14:37:17.7474886Z [main] New deal: Uwaga! Odkup telefonów przez Foxway (Samsung, Xiaomi) - Trad | temp=999
+2026-06-14T14:37:17.7475375Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7475766Z [telegram] sendPhoto failed: Too Many Requests: retry after 9
+2026-06-14T14:37:17.7476172Z [telegram] sendMessage failed: Too Many Requests: retry after 9
+2026-06-14T14:37:17.7476510Z [main] Failed to send deal 1030731
+2026-06-14T14:37:17.7477097Z [main] New deal: Youtube bez reklam na telewizorach LG oraz Androidzie (sposó | temp=999
+2026-06-14T14:37:17.7477560Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7477928Z [telegram] sendPhoto failed: Too Many Requests: retry after 3
+2026-06-14T14:37:17.7478417Z [main] New deal: Czy ktoś zna darmową bramke sms w 2023 roku ? | temp=999
+2026-06-14T14:37:17.7478835Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7479268Z [telegram] sendPhoto failed: Bad Request: wrong type of the web page content
+2026-06-14T14:37:17.7479671Z [main] Fetching page 3/3
+2026-06-14T14:37:17.7479950Z [pepper_client] page=3 -> 9 threads
+2026-06-14T14:37:17.7480241Z [state] Remote state updated OK (200)
+2026-06-14T14:37:17.7480702Z [main] Done. Seen: 49, sent new: 3
+2026-06-14T14:37:17.8214424Z ##[group]Run git config user.name "github-actions[bot]"
+2026-06-14T14:37:17.8214906Z [36;1mgit config user.name "github-actions[bot]"[0m
+2026-06-14T14:37:17.8215341Z [36;1mgit config user.email "github-actions[bot]@users.noreply.github.com"[0m
+2026-06-14T14:37:17.8215767Z [36;1m[0m
+2026-06-14T14:37:17.8216015Z [36;1mgit add -f data/seen_ids.json || true[0m
+2026-06-14T14:37:17.8216513Z [36;1mgit diff --staged --quiet || git commit -m "chore: update seen_ids [skip ci]"[0m
+2026-06-14T14:37:17.8217175Z [36;1m[0m
+2026-06-14T14:37:17.8217433Z [36;1mBRANCH="${GITHUB_REF#refs/heads/}"[0m
+2026-06-14T14:37:17.8217807Z [36;1mif [ -z "$BRANCH" ] || [ "$BRANCH" = "$GITHUB_REF" ]; then[0m
+2026-06-14T14:37:17.8218228Z [36;1m  BRANCH=$(git rev-parse --abbrev-ref HEAD)[0m
+2026-06-14T14:37:17.8218537Z [36;1mfi[0m
+2026-06-14T14:37:17.8218740Z [36;1m[0m
+2026-06-14T14:37:17.8218951Z [36;1mgit fetch origin "$BRANCH"[0m
+2026-06-14T14:37:17.8219222Z [36;1m[0m
+2026-06-14T14:37:17.8219519Z [36;1mif git rebase --autostash "origin/$BRANCH"; then[0m
+2026-06-14T14:37:17.8219864Z [36;1m  git push origin "$BRANCH"[0m
+2026-06-14T14:37:17.8220126Z [36;1melse[0m
+2026-06-14T14:37:17.8220346Z [36;1m  git rebase --abort || true[0m
+2026-06-14T14:37:17.8220664Z [36;1m  git pull --no-edit origin "$BRANCH" || true[0m
+2026-06-14T14:37:17.8220992Z [36;1m  git push origin "$BRANCH"[0m
+2026-06-14T14:37:17.8221240Z [36;1mfi[0m
+2026-06-14T14:37:17.8256118Z shell: /usr/bin/bash -e {0}
+2026-06-14T14:37:17.8256385Z env:
+2026-06-14T14:37:17.8256629Z   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+2026-06-14T14:37:17.8257175Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:37:17.8257628Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-06-14T14:37:17.8258079Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:37:17.8258479Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:37:17.8258863Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:37:17.8259285Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-06-14T14:37:17.8259620Z ##[endgroup]
+2026-06-14T14:37:17.8446780Z [main 01e15ce] chore: update seen_ids [skip ci]
+2026-06-14T14:37:17.8447443Z  1 file changed, 4 insertions(+), 1 deletion(-)
+2026-06-14T14:37:18.0876680Z From https://github.com/oriuma/hotsalestotg
+2026-06-14T14:37:18.0877896Z  * branch            main       -> FETCH_HEAD
+2026-06-14T14:37:18.0878440Z    46891a5..ed2ba62  main       -> origin/main
+2026-06-14T14:37:18.0942858Z warning: skipped previously applied commit 01e15ce
+2026-06-14T14:37:18.0943607Z hint: use --reapply-cherry-picks to include skipped commits
+2026-06-14T14:37:18.0944453Z hint: Disable this message with "git config set advice.skippedCherryPicks false"
+2026-06-14T14:37:18.0962354Z Successfully rebased and updated refs/heads/main.
+2026-06-14T14:37:18.3061097Z Everything up-to-date
+2026-06-14T14:37:18.3196832Z Post job cleanup.
+2026-06-14T14:37:18.4375111Z (node:2379) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-06-14T14:37:18.4375858Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-06-14T14:37:18.4557618Z Post job cleanup.
+2026-06-14T14:37:18.5393038Z [command]/usr/bin/git version
+2026-06-14T14:37:18.5433078Z git version 2.54.0
+2026-06-14T14:37:18.5469293Z Temporarily overriding HOME='/home/runner/work/_temp/d73fd4bd-b8ce-438c-90c6-fc233fc064e0' before making global git config changes
+2026-06-14T14:37:18.5470957Z Adding repository directory to the temporary git global config as a safe directory
+2026-06-14T14:37:18.5475147Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/hotsalestotg/hotsalestotg
+2026-06-14T14:37:18.5511742Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-06-14T14:37:18.5569721Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-06-14T14:37:18.5808702Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-06-14T14:37:18.5837504Z http.https://github.com/.extraheader
+2026-06-14T14:37:18.5848893Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-06-14T14:37:18.5881232Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-06-14T14:37:18.6115267Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-06-14T14:37:18.6146194Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-06-14T14:37:18.6519798Z Cleaning up orphan processes
+2026-06-14T14:37:18.6814147Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5.6.0. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

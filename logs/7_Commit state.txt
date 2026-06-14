@@ -1,0 +1,41 @@
+﻿2026-06-14T14:37:17.8214410Z ##[group]Run git config user.name "github-actions[bot]"
+2026-06-14T14:37:17.8214902Z [36;1mgit config user.name "github-actions[bot]"[0m
+2026-06-14T14:37:17.8215338Z [36;1mgit config user.email "github-actions[bot]@users.noreply.github.com"[0m
+2026-06-14T14:37:17.8215765Z [36;1m[0m
+2026-06-14T14:37:17.8216013Z [36;1mgit add -f data/seen_ids.json || true[0m
+2026-06-14T14:37:17.8216510Z [36;1mgit diff --staged --quiet || git commit -m "chore: update seen_ids [skip ci]"[0m
+2026-06-14T14:37:17.8217172Z [36;1m[0m
+2026-06-14T14:37:17.8217431Z [36;1mBRANCH="${GITHUB_REF#refs/heads/}"[0m
+2026-06-14T14:37:17.8217805Z [36;1mif [ -z "$BRANCH" ] || [ "$BRANCH" = "$GITHUB_REF" ]; then[0m
+2026-06-14T14:37:17.8218224Z [36;1m  BRANCH=$(git rev-parse --abbrev-ref HEAD)[0m
+2026-06-14T14:37:17.8218535Z [36;1mfi[0m
+2026-06-14T14:37:17.8218738Z [36;1m[0m
+2026-06-14T14:37:17.8218948Z [36;1mgit fetch origin "$BRANCH"[0m
+2026-06-14T14:37:17.8219210Z [36;1m[0m
+2026-06-14T14:37:17.8219473Z [36;1mif git rebase --autostash "origin/$BRANCH"; then[0m
+2026-06-14T14:37:17.8219861Z [36;1m  git push origin "$BRANCH"[0m
+2026-06-14T14:37:17.8220124Z [36;1melse[0m
+2026-06-14T14:37:17.8220344Z [36;1m  git rebase --abort || true[0m
+2026-06-14T14:37:17.8220662Z [36;1m  git pull --no-edit origin "$BRANCH" || true[0m
+2026-06-14T14:37:17.8220991Z [36;1m  git push origin "$BRANCH"[0m
+2026-06-14T14:37:17.8221238Z [36;1mfi[0m
+2026-06-14T14:37:17.8256106Z shell: /usr/bin/bash -e {0}
+2026-06-14T14:37:17.8256383Z env:
+2026-06-14T14:37:17.8256626Z   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+2026-06-14T14:37:17.8257172Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:37:17.8257625Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-06-14T14:37:17.8258076Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:37:17.8258477Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:37:17.8258857Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:37:17.8259283Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-06-14T14:37:17.8259619Z ##[endgroup]
+2026-06-14T14:37:17.8446757Z [main 01e15ce] chore: update seen_ids [skip ci]
+2026-06-14T14:37:17.8447440Z  1 file changed, 4 insertions(+), 1 deletion(-)
+2026-06-14T14:37:18.0876597Z From https://github.com/oriuma/hotsalestotg
+2026-06-14T14:37:18.0877892Z  * branch            main       -> FETCH_HEAD
+2026-06-14T14:37:18.0878437Z    46891a5..ed2ba62  main       -> origin/main
+2026-06-14T14:37:18.0942839Z warning: skipped previously applied commit 01e15ce
+2026-06-14T14:37:18.0943600Z hint: use --reapply-cherry-picks to include skipped commits
+2026-06-14T14:37:18.0944447Z hint: Disable this message with "git config set advice.skippedCherryPicks false"
+2026-06-14T14:37:18.0962344Z Successfully rebased and updated refs/heads/main.
+2026-06-14T14:37:18.3061068Z Everything up-to-date

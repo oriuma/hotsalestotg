@@ -1,0 +1,101 @@
+﻿2026-06-14T14:36:49.8650320Z ##[group]Run python main.py
+2026-06-14T14:36:49.8650631Z [36;1mpython main.py[0m
+2026-06-14T14:36:49.8683647Z shell: /usr/bin/bash -e {0}
+2026-06-14T14:36:49.8683920Z env:
+2026-06-14T14:36:49.8684158Z   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+2026-06-14T14:36:49.8684535Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:49.8684984Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-06-14T14:36:49.8685420Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:49.8685809Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:49.8686198Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:49.8686612Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-06-14T14:36:49.8687620Z   TELEGRAM_BOT_TOKEN: ***
+2026-06-14T14:36:49.8687890Z   TELEGRAM_CHAT_ID: ***
+2026-06-14T14:36:49.8691076Z   GITHUB_TOKEN: ***
+2026-06-14T14:36:49.8691329Z   STATE_FILE: data/seen_ids.json
+2026-06-14T14:36:49.8691644Z   MIN_TEMPERATURE: 0
+2026-06-14T14:36:49.8691870Z   MAX_PAGES: 3
+2026-06-14T14:36:49.8692085Z ##[endgroup]
+2026-06-14T14:37:17.7443405Z [main] Loading state from data/seen_ids.json
+2026-06-14T14:37:17.7445686Z [main] Already sent: 33 deals
+2026-06-14T14:37:17.7446576Z [main] Fetching page 1/3
+2026-06-14T14:37:17.7447210Z [pepper_client] Warm-up GET /najgoretsze -> 200
+2026-06-14T14:37:17.7447703Z [pepper_client] bpn -> 200
+2026-06-14T14:37:17.7447989Z [pepper_client] XSRF token acquired
+2026-06-14T14:37:17.7448280Z [pepper_client] page=1 -> 20 threads
+2026-06-14T14:37:17.7448559Z [main] Fetching page 2/3
+2026-06-14T14:37:17.7448825Z [pepper_client] page=2 -> 20 threads
+2026-06-14T14:37:17.7449823Z [main] New deal: (Pitbull) Limitowana koszulka, której cały dochód ze sprzeda | temp=999
+2026-06-14T14:37:17.7450373Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7450825Z [telegram] sendPhoto failed: Bad Request: wrong type of the web page content
+2026-06-14T14:37:17.7451288Z [main] New deal: Laresar V7 czy X11? | temp=999
+2026-06-14T14:37:17.7451654Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7452101Z [telegram] sendPhoto failed: Bad Request: wrong type of the web page content
+2026-06-14T14:37:17.7452574Z [telegram] sendMessage failed: Too Many Requests: retry after 15
+2026-06-14T14:37:17.7452944Z [main] Failed to send deal 1041236
+2026-06-14T14:37:17.7453374Z [main] New deal: Polski Amazon, kupowanie na fakturę VAT | temp=999
+2026-06-14T14:37:17.7453808Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7454218Z [telegram] sendMessage failed: Too Many Requests: retry after 15
+2026-06-14T14:37:17.7454587Z [main] Failed to send deal 370503
+2026-06-14T14:37:17.7455456Z [main] New deal: Uwaga nowy scam oszustwo na olx - przestrzegam, informuje, u | temp=999
+2026-06-14T14:37:17.7455938Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7456340Z [telegram] sendMessage failed: Too Many Requests: retry after 15
+2026-06-14T14:37:17.7456710Z [main] Failed to send deal 1179975
+2026-06-14T14:37:17.7457269Z [main] New deal: OLX - nowe funkcje | temp=999
+2026-06-14T14:37:17.7457649Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7458051Z [telegram] sendMessage failed: Too Many Requests: retry after 14
+2026-06-14T14:37:17.7458403Z [main] Failed to send deal 1184592
+2026-06-14T14:37:17.7458758Z [main] New deal: IGPSPORT BSC300/iGS630s - Informacje o mapach | temp=999
+2026-06-14T14:37:17.7459183Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7459567Z [telegram] sendPhoto failed: Too Many Requests: retry after 14
+2026-06-14T14:37:17.7459973Z [telegram] sendMessage failed: Too Many Requests: retry after 14
+2026-06-14T14:37:17.7460325Z [main] Failed to send deal 1046955
+2026-06-14T14:37:17.7460783Z [main] New deal: Laresar V7 - instrukcja wymiany pękniętej rury | temp=999
+2026-06-14T14:37:17.7461239Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7461919Z [telegram] sendPhoto failed: Too Many Requests: retry after 13
+2026-06-14T14:37:17.7462355Z [telegram] sendMessage failed: Too Many Requests: retry after 13
+2026-06-14T14:37:17.7462709Z [main] Failed to send deal 1223663
+2026-06-14T14:37:17.7463185Z [main] New deal: Kubki mistrzostw świata FIFA World Cup 2026 w McDonald's | temp=999
+2026-06-14T14:37:17.7463667Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7464072Z [telegram] sendPhoto failed: Too Many Requests: retry after 13
+2026-06-14T14:37:17.7464481Z [telegram] sendMessage failed: Too Many Requests: retry after 12
+2026-06-14T14:37:17.7464926Z [main] Failed to send deal 1294564
+2026-06-14T14:37:17.7465370Z [main] New deal: jak kupić coś przez sms? | temp=999
+2026-06-14T14:37:17.7465740Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7466118Z [telegram] sendPhoto failed: Too Many Requests: retry after 12
+2026-06-14T14:37:17.7466508Z [telegram] sendMessage failed: Too Many Requests: retry after 12
+2026-06-14T14:37:17.7466861Z [main] Failed to send deal 970225
+2026-06-14T14:37:17.7467289Z [main] New deal: Efragola perfumeria, legitny? | temp=999
+2026-06-14T14:37:17.7467656Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7468027Z [telegram] sendPhoto failed: Too Many Requests: retry after 11
+2026-06-14T14:37:17.7468415Z [telegram] sendMessage failed: Too Many Requests: retry after 11
+2026-06-14T14:37:17.7468761Z [main] Failed to send deal 944141
+2026-06-14T14:37:17.7469147Z [main] New deal: Stowarzyszenie do medicover sport lub innego pakietu | temp=999
+2026-06-14T14:37:17.7469604Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7469991Z [telegram] sendPhoto failed: Too Many Requests: retry after 11
+2026-06-14T14:37:17.7470384Z [telegram] sendMessage failed: Too Many Requests: retry after 10
+2026-06-14T14:37:17.7470731Z [main] Failed to send deal 1248980
+2026-06-14T14:37:17.7471123Z [main] New deal: Aliexpress, wysyłka EU i faktura VAT | temp=999
+2026-06-14T14:37:17.7471512Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7471888Z [telegram] sendMessage failed: Too Many Requests: retry after 10
+2026-06-14T14:37:17.7472235Z [main] Failed to send deal 980023
+2026-06-14T14:37:17.7472605Z [main] New deal: Gwarancja / rękojmia na Aliexpress | temp=999
+2026-06-14T14:37:17.7472970Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7473374Z [telegram] sendPhoto failed: Too Many Requests: retry after 10
+2026-06-14T14:37:17.7473883Z [telegram] sendMessage failed: Too Many Requests: retry after 9
+2026-06-14T14:37:17.7474227Z [main] Failed to send deal 911550
+2026-06-14T14:37:17.7474883Z [main] New deal: Uwaga! Odkup telefonów przez Foxway (Samsung, Xiaomi) - Trad | temp=999
+2026-06-14T14:37:17.7475372Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7475752Z [telegram] sendPhoto failed: Too Many Requests: retry after 9
+2026-06-14T14:37:17.7476170Z [telegram] sendMessage failed: Too Many Requests: retry after 9
+2026-06-14T14:37:17.7476508Z [main] Failed to send deal 1030731
+2026-06-14T14:37:17.7477094Z [main] New deal: Youtube bez reklam na telewizorach LG oraz Androidzie (sposó | temp=999
+2026-06-14T14:37:17.7477558Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7477927Z [telegram] sendPhoto failed: Too Many Requests: retry after 3
+2026-06-14T14:37:17.7478414Z [main] New deal: Czy ktoś zna darmową bramke sms w 2023 roku ? | temp=999
+2026-06-14T14:37:17.7478833Z [ai_scorer] MINIMAX_API_TOKEN not set, skipping AI scoring
+2026-06-14T14:37:17.7479264Z [telegram] sendPhoto failed: Bad Request: wrong type of the web page content
+2026-06-14T14:37:17.7479668Z [main] Fetching page 3/3
+2026-06-14T14:37:17.7479947Z [pepper_client] page=3 -> 9 threads
+2026-06-14T14:37:17.7480239Z [state] Remote state updated OK (200)
+2026-06-14T14:37:17.7480523Z [main] Done. Seen: 49, sent new: 3

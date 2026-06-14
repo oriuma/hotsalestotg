@@ -1,0 +1,13 @@
+﻿2026-06-14T14:36:49.8498238Z ##[group]Run mkdir -p data
+2026-06-14T14:36:49.8498589Z [36;1mmkdir -p data[0m
+2026-06-14T14:36:49.8498958Z [36;1mtest -f data/seen_ids.json || echo '[]' > data/seen_ids.json[0m
+2026-06-14T14:36:49.8535279Z shell: /usr/bin/bash -e {0}
+2026-06-14T14:36:49.8535559Z env:
+2026-06-14T14:36:49.8535797Z   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+2026-06-14T14:36:49.8536187Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:49.8536643Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-06-14T14:36:49.8537332Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:49.8537721Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:49.8538139Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-14T14:36:49.8538527Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-06-14T14:36:49.8538870Z ##[endgroup]
