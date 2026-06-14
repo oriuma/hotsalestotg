@@ -27,15 +27,17 @@ _session.headers.update({
     "x-requested-with": "XMLHttpRequest",
 })
 
-# HAR confirms: /najgoretsze page sends feed="popular" (not "hot").
-# Fields confirmed present in schema from HAR capture.
+# Schema-validated query:
+# - feed="popular" confirmed from HAR for /najgoretsze page
+# - options: only {text value} — "selected" does not exist on WidgetOption
+# - no groupId variable — it expects IDFilter type, not Int
 GQL_QUERY = """
-query DiscussionWidget($page: Int, $feed: String, $groupId: Int) {
+query DiscussionWidget($page: Int, $feed: String) {
   discussionWidget(
     page: $page,
-    filter: { feed: { eq: $feed }, groupId: $groupId }
+    filter: { feed: { eq: $feed } }
   ) {
-    options { text value selected }
+    options { text value }
     threads {
       threadId
       title
@@ -100,12 +102,6 @@ def _warm_up_session():
 
 
 def _extract_threads(data) -> tuple[list, list]:
-    """
-    Extract threads from a GraphQL response that may be:
-    - a dict  (single response)
-    - a list  (batched responses)
-    Returns (threads, errors).
-    """
     if isinstance(data, list):
         errors = []
         for item in data:
@@ -131,10 +127,9 @@ def fetch_page(page: int) -> list[dict]:
         _warm_up_session()
         time.sleep(1.5)
 
-    # feed="popular" confirmed from HAR: /najgoretsze sends variables={discussionWidgetPage:1, feed:"popular"}
     payload = {
         "operationName": "DiscussionWidget",
-        "variables": {"page": page, "feed": "popular", "groupId": None},
+        "variables": {"page": page, "feed": "popular"},
         "query": GQL_QUERY,
     }
 
@@ -215,7 +210,6 @@ def normalize_deal(thread: dict) -> dict | None:
         "id":           thread_id,
         "title":        title,
         "url":          url,
-        # discussionWidget doesn't expose temperature — default high so filter passes
         "temperature":  thread.get("temperature", 999),
         "price":        thread.get("price"),
         "next_price":   thread.get("nextBestPrice"),
