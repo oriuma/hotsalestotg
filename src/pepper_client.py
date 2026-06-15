@@ -12,21 +12,12 @@ _session.headers.update({
     ),
     "accept": "application/json, text/plain, */*",
     "accept-language": "pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7",
-    "accept-encoding": "gzip, deflate",
     "content-type": "application/json",
     "origin": "https://www.pepper.pl",
     "referer": "https://www.pepper.pl/najgoretsze",
-    "sec-ch-ua": '"Chromium";v="148", "Google Chrome";v="148", "Not-A.Brand";v="99"',
-    "sec-ch-ua-mobile": "?0",
-    "sec-ch-ua-platform": '"Windows"',
-    "sec-fetch-dest": "empty",
-    "sec-fetch-mode": "cors",
-    "sec-fetch-site": "same-origin",
-    "x-pepper-txn": "index",
-    "x-request-type": "application/vnd.pepper.v1+json",
-    "x-requested-with": "XMLHttpRequest",
 })
 
+# Упрощенный запрос без проблемных полей merchant.name и groups.name
 GQL_QUERY = """
 query DiscussionWidget($page: Int, $feed: String) {
   discussionWidget(
@@ -42,14 +33,7 @@ query DiscussionWidget($page: Int, $feed: String) {
       nextBestPrice
       shortLastPublishedTimeAgo
       mainImage {
-        name
         path
-      }
-      merchant {
-        name
-      }
-      groups {
-        name
       }
     }
   }
@@ -67,9 +51,8 @@ def _warm_up_session():
             timeout=15,
             headers={"accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"},
         )
-        print(f"[pepper_client] Warm-up GET /najgoretsze -> {r.status_code}")
-    except Exception as e:
-        print(f"[pepper_client] Warm-up GET failed (non-fatal): {e}")
+    except Exception:
+        pass
 
     try:
         r2 = _session.post(
@@ -83,11 +66,10 @@ def _warm_up_session():
                 token = payload.get("data", {}).get("token")
                 if token:
                     _session.headers.update({"x-xsrf-token": token, "X-XSRF-TOKEN": token})
-                    print(f"[pepper_client] XSRF token acquired")
             except JSONDecodeError:
                 pass
-    except Exception as e:
-        print(f"[pepper_client] bpn failed (non-fatal): {e}")
+    except Exception:
+        pass
 
 
 def _extract_threads(data) -> tuple[list, list]:
@@ -143,7 +125,6 @@ def fetch_page(page: int) -> list[dict]:
 
                 print(f"[pepper_client] page={page} -> {len(threads)} threads")
                 return threads
-
             elif resp.status_code == 418:
                 delay = RETRY_DELAYS[attempt] if attempt < len(RETRY_DELAYS) else 40
                 if attempt < MAX_RETRIES - 1:
@@ -170,19 +151,14 @@ def normalize_deal(thread: dict) -> dict | None:
     if not title or not url:
         return None
 
-    # Исправлено: берем изображение товара, а не аватар пользователя
     image_path = (thread.get("mainImage") or {}).get("path", "")
     image_url = ""
     if image_path:
-        # Pepper использует разные домены для изображений, но часто работает через основной
-        image_url = f"https://www.pepper.pl/assets/img/{image_path}"
-        # Для GraphQL ответов путь обычно уже содержит необходимые части
-        if image_path.startswith("threads/"):
+        # Корректное формирование URL для статических изображений Pepper
+        if not image_path.startswith("http"):
             image_url = f"https://static.pepper.pl/{image_path}"
-
-    merchant = (thread.get("merchant") or {}).get("name", "")
-    groups = thread.get("groups", [])
-    category = groups[0].get("name", "") if groups else ""
+        else:
+            image_url = image_path
 
     return {
         "id":           thread_id,
@@ -191,8 +167,8 @@ def normalize_deal(thread: dict) -> dict | None:
         "temperature":  thread.get("temperature", 0),
         "price":        thread.get("price"),
         "next_price":   thread.get("nextBestPrice"),
-        "merchant":     merchant,
-        "category":     category,
+        "merchant":     "", # Убрано временно для стабильности
+        "category":     "", # Убрано временно для стабильности
         "published":    thread.get("shortLastPublishedTimeAgo", ""),
         "image_url":    image_url,
         "comment_count": thread.get("commentCount", 0),
