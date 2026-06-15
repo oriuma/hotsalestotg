@@ -46,10 +46,12 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MINIMAX_API_TOKEN: ${{ secrets.MINIMAX_API_TOKEN }}
           STATE_FILE: "data/seen_ids.json"
-          # Set to 0 for testing — change back to 50-100 once confirmed working
-          MIN_TEMPERATURE: "0"
+          MIN_TEMPERATURE: "30"
+          MAX_AGE_DAYS: "7"
           MAX_PAGES: "3"
+          TELEGRAM_SLEEP_SECONDS: "3"
         run: |
           python main.py
 
