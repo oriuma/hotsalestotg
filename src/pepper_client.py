@@ -27,35 +27,30 @@ _session.headers.update({
     "x-requested-with": "XMLHttpRequest",
 })
 
-# Schema-validated query:
-# - feed="popular" confirmed from HAR for /najgoretsze page
-# - options: only {text value} — "selected" does not exist on WidgetOption
-# - no groupId variable — it expects IDFilter type, not Int
 GQL_QUERY = """
 query DiscussionWidget($page: Int, $feed: String) {
   discussionWidget(
     page: $page,
     filter: { feed: { eq: $feed } }
   ) {
-    options { text value }
     threads {
       threadId
       title
-      titleSlug
-      type
       url
-      isIndexed
-      commentCount
+      temperature
+      price
+      nextBestPrice
       shortLastPublishedTimeAgo
-      lastUpdatedDate
-      user {
-        userId
-        username
-        isUserProfileHidden
-        isDeletedOrPendingDeletion
-        avatar { name path }
+      mainImage {
+        name
+        path
       }
-      isBacklinksFeatureApplied
+      merchant {
+        name
+      }
+      groups {
+        name
+      }
     }
   }
 }
@@ -66,7 +61,6 @@ RETRY_DELAYS = [3, 10, 20, 40]
 
 
 def _warm_up_session():
-    """Replicate browser flow: GET /najgoretsze -> POST /bpn/getRequestPermissionParams."""
     try:
         r = _session.get(
             "https://www.pepper.pl/najgoretsze",
@@ -83,7 +77,6 @@ def _warm_up_session():
             timeout=15,
             json={},
         )
-        print(f"[pepper_client] bpn -> {r2.status_code}")
         if r2.status_code == 200:
             try:
                 payload = r2.json()
@@ -91,12 +84,8 @@ def _warm_up_session():
                 if token:
                     _session.headers.update({"x-xsrf-token": token, "X-XSRF-TOKEN": token})
                     print(f"[pepper_client] XSRF token acquired")
-                else:
-                    print(f"[pepper_client] bpn: token not found in: {str(payload)[:300]}")
-            except JSONDecodeError as e:
-                print(f"[pepper_client] bpn not JSON: {e} | {r2.text[:200]!r}")
-        else:
-            print(f"[pepper_client] bpn non-200: {r2.text[:200]!r}")
+            except JSONDecodeError:
+                pass
     except Exception as e:
         print(f"[pepper_client] bpn failed (non-fatal): {e}")
 
@@ -141,19 +130,12 @@ def fetch_page(page: int) -> list[dict]:
                 try:
                     data = resp.json()
                 except JSONDecodeError:
-                    print(
-                        f"[pepper_client] Invalid JSON page={page} "
-                        f"attempt {attempt+1}/{MAX_RETRIES} "
-                        f"encoding={resp.headers.get('Content-Encoding','none')} "
-                        f"preview={resp.content[:120]!r}"
-                    )
                     if attempt < MAX_RETRIES - 1:
                         time.sleep(RETRY_DELAYS[attempt])
                         continue
                     return []
 
                 threads, errors = _extract_threads(data)
-
                 if errors:
                     print(f"[pepper_client] GraphQL errors page={page}: {str(errors)[:600]}")
                     if not threads:
@@ -164,30 +146,14 @@ def fetch_page(page: int) -> list[dict]:
 
             elif resp.status_code == 418:
                 delay = RETRY_DELAYS[attempt] if attempt < len(RETRY_DELAYS) else 40
-                print(f"[pepper_client] 418 page={page} attempt {attempt+1} wait {delay}s")
                 if attempt < MAX_RETRIES - 1:
                     time.sleep(delay)
                     _warm_up_session()
                     time.sleep(2)
                 else:
                     return []
-
-            elif resp.status_code >= 500:
-                delay = RETRY_DELAYS[attempt] if attempt < len(RETRY_DELAYS) else 40
-                print(f"[pepper_client] {resp.status_code} page={page} wait {delay}s")
-                if attempt < MAX_RETRIES - 1:
-                    time.sleep(delay)
-                else:
-                    return []
-
             else:
-                print(f"[pepper_client] HTTP {resp.status_code} page={page}: {resp.text[:300]}")
                 return []
-
-        except requests.exceptions.Timeout:
-            print(f"[pepper_client] Timeout page={page} attempt {attempt+1}/{MAX_RETRIES}")
-            if attempt < MAX_RETRIES - 1:
-                time.sleep(RETRY_DELAYS[attempt])
         except Exception as e:
             print(f"[pepper_client] Exception page={page}: {e}")
             return []
@@ -204,19 +170,31 @@ def normalize_deal(thread: dict) -> dict | None:
     if not title or not url:
         return None
 
-    avatar_path = ((thread.get("user") or {}).get("avatar") or {}).get("path", "")
+    # Исправлено: берем изображение товара, а не аватар пользователя
+    image_path = (thread.get("mainImage") or {}).get("path", "")
+    image_url = ""
+    if image_path:
+        # Pepper использует разные домены для изображений, но часто работает через основной
+        image_url = f"https://www.pepper.pl/assets/img/{image_path}"
+        # Для GraphQL ответов путь обычно уже содержит необходимые части
+        if image_path.startswith("threads/"):
+            image_url = f"https://static.pepper.pl/{image_path}"
+
+    merchant = (thread.get("merchant") or {}).get("name", "")
+    groups = thread.get("groups", [])
+    category = groups[0].get("name", "") if groups else ""
 
     return {
         "id":           thread_id,
         "title":        title,
         "url":          url,
-        "temperature":  thread.get("temperature", 999),
+        "temperature":  thread.get("temperature", 0),
         "price":        thread.get("price"),
         "next_price":   thread.get("nextBestPrice"),
-        "merchant":     "",
-        "category":     "",
+        "merchant":     merchant,
+        "category":     category,
         "published":    thread.get("shortLastPublishedTimeAgo", ""),
-        "image_url":    f"https://www.pepper.pl{avatar_path}" if avatar_path else "",
+        "image_url":    image_url,
         "comment_count": thread.get("commentCount", 0),
     }
 

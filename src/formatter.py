@@ -4,6 +4,10 @@ from datetime import datetime, timezone
 def time_ago(published_at: str) -> str:
     if not published_at:
         return ""
+    # Pepper sometimes returns strings like "10 min temu" directly in GraphQL
+    if "temu" in published_at or "ago" in published_at:
+        return published_at
+        
     try:
         published_at = published_at.replace("Z", "+00:00")
         dt = datetime.fromisoformat(published_at)
@@ -18,17 +22,12 @@ def time_ago(published_at: str) -> str:
         else:
             return f"{diff // 86400} дней назад"
     except Exception:
-        return ""
+        return published_at
 
 
 def build_caption(deal: dict, ai_score: str = "") -> str:
     """
     Build an HTML-formatted Telegram caption for one pepper.pl deal.
-
-    Expected deal keys:
-        title, url, temperature, price, next_price, merchant, category, published, image_url
-    Optional:
-        ai_score  - short string like '8/10 — Хорошая скидка'
     """
     title       = deal.get("title", "Brak tytułu")
     url         = deal.get("url", "")
@@ -46,7 +45,7 @@ def build_caption(deal: dict, ai_score: str = "") -> str:
             try:
                 disc = round((1 - float(price) / float(next_price)) * 100)
                 price_line += f"  <s>{next_price} PLN</s>  <b>(-{disc}%)</b>"
-            except (ValueError, ZeroDivisionError):
+            except (ValueError, ZeroDivisionError, TypeError):
                 pass
     else:
         price_line = "💰 <b>Bezpłatnie / sprawdź cenę</b>"
@@ -57,17 +56,18 @@ def build_caption(deal: dict, ai_score: str = "") -> str:
         f"🌡 Temperatura: <b>{temperature}°</b>",
     ]
 
-    if ai_score:
-        lines.append(f"🧠 Оценка AI: <b>{ai_score}</b>")
-
     if merchant:
-        lines.append(f"🏪 {merchant}")
+        lines.append(f"🏪 Sklep: <b>{merchant}</b>")
+    
     if category:
-        lines.append(f"🗂 {category}")
+        lines.append(f"🗂 Kategoria: <b>{category}</b>")
+
+    if ai_score:
+        lines.append(f"\n🤖 <b>Ocena AI:</b>\n{ai_score}")
 
     ago = time_ago(published)
     if ago:
-        lines.append(f"⏰ {ago}")
+        lines.append(f"\n⏰ {ago}")
 
     if url:
         lines.append(f'🔗 <a href="{url}">Pepper.pl</a>')
