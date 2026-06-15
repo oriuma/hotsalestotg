@@ -8,15 +8,22 @@ def _get_client() -> OpenAI | None:
     global _client
     if _client is not None:
         return _client
-    
-    # Используем стандартные переменные окружения Manus для OpenAI
+
+    # Prefer Minimax (used in this project), fallback to generic OpenAI if needed
+    minimax_key = os.environ.get("MINIMAX_API_TOKEN")
+    if minimax_key:
+        _client = OpenAI(
+            base_url="https://api.tokenrouter.com/v1",
+            api_key=minimax_key,
+        )
+        return _client
+
     api_key = os.environ.get("OPENAI_API_KEY")
     base_url = os.environ.get("OPENAI_API_BASE")
-    
     if not api_key:
-        print("[ai_scorer] OPENAI_API_KEY not set, skipping AI scoring")
+        print("[ai_scorer] MINIMAX_API_TOKEN and OPENAI_API_KEY not set, skipping AI scoring")
         return None
-        
+
     _client = OpenAI(
         base_url=base_url,
         api_key=api_key,
@@ -34,23 +41,20 @@ X/10 — [krótki werdykt po polsku, max 60 znaków]
 
 Zasady oceniania:
 - 9-10/10: wyjątkowa okazja, cena znacznie poniżej rynkowej (>40% taniej)
-- 7-8/10: dobra oferta, oszczędność wyraźna, produkt popularny
+- 7-8/10: dobra oferta, oszczędność wyraźna, produkt популярny
 - 5-6/10: przyzwoita zniżka ale nie rewelacja, można poczekać na lepszą
-- 3-4/10: mała zniżka (<15%) или produkt niszowy, łatwo znaleźć taniej
+- 3-4/10: mała zniżka (<15%) lub produkt niszowy, łatwo znaleźć taniej
 - 1-2/10: prawie brak zniżki lub cena wyższa niż u konkurencji
 
 Uwzględnij:
 - Stosunek ceny do ceny regularnej
-- Temperaturę społeczности (im wyższa tym bardziej zweryfikowana okazja)
+- Temperaturę społeczności (im wyższa tym bardziej zweryfikowana okazja)
 - Kategorię produktu i typowe ceny rynkowe
 """
 
 
 def score_deal(deal: dict) -> str:
-    """
-    Returns a multi-line AI score string.
-    Returns empty string if API is unavailable or fails.
-    """
+    """Return multi-line AI score or empty string if scoring is unavailable."""
     client = _get_client()
     if client is None:
         return ""
@@ -67,6 +71,11 @@ def score_deal(deal: dict) -> str:
         parts.append(f"Cena promocyjna: {price} PLN")
     if next_price:
         parts.append(f"Cena regularna: {next_price} PLN")
+        try:
+            disc = round((1 - float(price) / float(next_price)) * 100)
+            parts.append(f"Obniżka: {disc}%")
+        except (ValueError, ZeroDivisionError, TypeError):
+            pass
     if merchant:
         parts.append(f"Sklep: {merchant}")
     if category:
@@ -77,7 +86,7 @@ def score_deal(deal: dict) -> str:
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4o-mini", # Используем доступную модель
+            model="MiniMax-M3" if os.environ.get("MINIMAX_API_TOKEN") else "gpt-4o-mini",
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": user_msg},
