@@ -2,8 +2,6 @@ name: Pepper.pl Hot Deals → Telegram
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "*/1500000000 * * * *"  # every 15 minutes
 
 concurrency:
   group: pepper-scraper-state
